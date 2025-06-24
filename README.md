@@ -1,4 +1,4 @@
-# 🛠️ Machining Time Predictor (CNC Product-Based Regression)
+# 🛠️ Cost Estimation Network (CNC Product-Based Regression)
 
 This repository provides an implementation of a machine learning pipeline for predicting **machining time** and **programming time** using material properties and product geometry extracted from STEP files.
 
