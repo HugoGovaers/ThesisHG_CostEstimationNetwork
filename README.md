@@ -91,23 +91,20 @@ python data_process/main.py
 1. Configure model and training parameters in `config.yaml`. Example:
 
 ```yaml
-# Dataset
+
 dataset:
   train_path: "data"
   test_path: "data_test"
   reinitialize: False # If True, the dataset will be reinitialized and all previous data will be lost
-# Labels
+
 labels:
   labels: ["Total Time"] # Labels to be predicted
   calculated: ["Calculated Time"] # Estimations by experts
 
-
-# Features
 features:
   categorical_features: ["Material Group ID"]
   numerical_features: ["Quantity", "total_volume", "bounding_box_volume"] # total_volume and bounding_box_volume are obtained from step file
 
-# Filtering
 filter:
   min_num_nodes: 1
   max_num_nodes: 400
@@ -115,7 +112,6 @@ filter:
   max_label: 10
   materials_to_ignore: [0, 12, 13, 14] # 0 = "unknown", 12 = "Insert", 13 = "Procured Part", 14 = "Articles"
 
-# Model
 model:
   hidden_dim: 32
   face_attr_dim: 14
@@ -135,8 +131,6 @@ model:
   dropout_graph_nn: 0.0
   dropout_regression: 0.2
 
-
-# Training
 training:
   epochs: 500
   patience: 50
@@ -148,7 +142,6 @@ training:
   optimizer: "adam"  # Options: "adam", "sgd", "rmsprop"
   loss_fn: "huber"  # Options: "mse", "mae", "huber"
 
-# Logging
 logging:
   save_dir_checkpoints: "./logs/checkpoints"
   save_dir_best_model: "./logs/best_model"
@@ -157,15 +150,13 @@ logging:
   save_dir_figs : "./logs/Figures/Programming"
   figure_start : "Programming_"
   log_interval: 10
-
+```
 
 2. Run the training script:
 
 ```bash
 python training.py
 ```
-
----
 
 ## 🔮 Prediction
 
