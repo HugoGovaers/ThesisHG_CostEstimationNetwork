@@ -1,6 +1,7 @@
 # 🛠️ Cost Estimation Network (CNC Product-Based Regression)
 
-This repository provides an implementation of a machine learning pipeline for predicting **machining time** and **programming time** using material properties and product geometry extracted from STEP files.
+A **PyTorch-based pipeline** for predicting **machining time** and **programming time** using material properties and product geometry extracted from STEP files.  
+Designed for **high-mix, low-volume CNC production environments**, this tool enables cost estimation based on 3D product data and material metadata.
 
 ---
 
@@ -24,7 +25,7 @@ pip install torch-scatter torch-sparse torch-cluster torch-spline-conv
 pip install -U scikit-learn pandas
 ```
 
-⚠️ **Note:** Make sure to install the [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit) if you want to train the model on a GPU.
+⚠️ **Note:** Ensure that a compatible [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit) is installed if you intend to train the model on a GPU. Otherwise, PyTorch will default to CPU execution.
 
 ---
 
@@ -63,7 +64,7 @@ This CSV file is the main metadata index and should include:
 #### Optional Columns:
 - Categorical features (as integers).
 - Numerical features (as floats).
-- Calculated target variable(s): `Calculated Programming Time`, `Calculated Programming Time` (to compare results with other methods on historical data)
+- Calculated target variable(s): `Calculated Programming Time`, `Calculated Machining Time` (to compare results with other methods on historical data).
 
 ### 📂 `steps/` Folder
 
@@ -87,7 +88,19 @@ python data_process/main.py
 
 ## 🏋️ Training
 
-1. Configure model and training parameters in `config.yaml`.
+1. Configure model and training parameters in `config.yaml`. Example:
+
+```yaml
+model:
+  hidden_dim: 128
+  num_layers: 3
+
+training:
+  batch_size: 32
+  learning_rate: 0.001
+  epochs: 100
+```
+
 2. Run the training script:
 
 ```bash
@@ -106,8 +119,21 @@ python predict.py
 ```
 
 3. Follow the prompts:
-   - Enter the filename (without the `.step` extension).
-   - Enter any additional features manually (Note: If feature layout changes, you must update `predict.py` accordingly).
+   - Enter the STEP filename (without the `.step` extension).
+   - Enter additional feature values if required (based on your model configuration).  
+     ⚠️ **Important:** If the feature list changes (columns added, removed, or reordered in training data), you must also update `predict.py` to reflect the new layout.
+
+---
+
+## 📊 Example Output
+
+```
+Prediction Results:
+-------------------
+Drawing ID: 123456
+Estimated Programming Time: 45.6 min
+Estimated Machining Time: 120.4 min
+```
 
 ---
 
@@ -116,3 +142,5 @@ python predict.py
 - This project assumes a high-mix, low-volume production setup.
 - Ensure consistent file naming between STEP files and the `Drawing ID` column.
 - You can extend the model to predict different or multiple regression targets with minimal changes.
+
+---
