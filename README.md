@@ -91,15 +91,73 @@ python data_process/main.py
 1. Configure model and training parameters in `config.yaml`. Example:
 
 ```yaml
-model:
-  hidden_dim: 128
-  num_layers: 3
+# Dataset
+dataset:
+  train_path: "data"
+  test_path: "data_test"
+  reinitialize: False # If True, the dataset will be reinitialized and all previous data will be lost
+# Labels
+labels:
+  labels: ["Total Time"] # Labels to be predicted
+  calculated: ["Calculated Time"] # Estimations by experts
 
+
+# Features
+features:
+  categorical_features: ["Material Group ID"]
+  numerical_features: ["Quantity", "total_volume", "bounding_box_volume"] # total_volume and bounding_box_volume are obtained from step file
+
+# Filtering
+filter:
+  min_num_nodes: 1
+  max_num_nodes: 400
+  min_label: 0.1
+  max_label: 10
+  materials_to_ignore: [0, 12, 13, 14] # 0 = "unknown", 12 = "Insert", 13 = "Procured Part", 14 = "Articles"
+
+# Model
+model:
+  hidden_dim: 32
+  face_attr_dim: 14
+  face_attr_emb: 32
+  edge_attr_dim: 15
+  edge_attr_emb: 32
+  face_grid_dim: 7
+  face_grid_emb: 32
+  edge_grid_dim: 12
+  edge_grid_emb: 32
+  categorical_features_dim: 18
+  numerical_features_dim: 3
+  dropout_face_encoder: 0.1
+  dropout_edge_encoder: 0.1
+  dropout_face_grid_encoder: 0.1
+  dropout_edge_grid_encoder: 0.1
+  dropout_graph_nn: 0.0
+  dropout_regression: 0.2
+
+
+# Training
 training:
+  epochs: 500
+  patience: 50
+  early_stopping: true
   batch_size: 32
-  learning_rate: 0.001
-  epochs: 100
-```
+  lr: 0.001
+  seed: 42
+  split_ratio: 0.8
+  optimizer: "adam"  # Options: "adam", "sgd", "rmsprop"
+  loss_fn: "huber"  # Options: "mse", "mae", "huber"
+
+# Logging
+logging:
+  save_dir_checkpoints: "./logs/checkpoints"
+  save_dir_best_model: "./logs/best_model"
+  save_dir_losses: "./logs/losses"
+  save_dir_config: "./logs/config"
+  save_dir_figs : "./logs/Figures/Programming"
+  figure_start : "Programming_"
+  log_interval: 10
+
 
 2. Run the training script:
 
@@ -122,19 +180,6 @@ python predict.py
    - Enter the STEP filename (without the `.step` extension).
    - Enter additional feature values if required (based on your model configuration).  
      ⚠️ **Important:** If the feature list changes (columns added, removed, or reordered in training data), you must also update `predict.py` to reflect the new layout.
-
----
-
-## 📊 Example Output
-
-```
-Prediction Results:
--------------------
-Drawing ID: 123456
-Estimated Programming Time: 45.6 min
-Estimated Machining Time: 120.4 min
-```
-
 ---
 
 ## 📌 Notes
