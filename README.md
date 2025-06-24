@@ -58,11 +58,12 @@ This CSV file is the main metadata index and should include:
 
 #### Required Columns:
 - `Drawing ID`: Must match the corresponding STEP file name (excluding the extension).
-- Target variable(s): e.g., `Machining time`, `Programming time`.
+- Target variable(s): e.g., `Programming Time`, `Machining Time`
 
 #### Optional Columns:
 - Categorical features (as integers).
 - Numerical features (as floats).
+- Calculated target variable(s): `Calculated Programming Time`, `Calculated Programming Time` (to compare results with other methods on historical data)
 
 ### 📂 `steps/` Folder
 
