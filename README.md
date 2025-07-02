@@ -65,18 +65,6 @@ This CSV file is the main metadata index and should include:
 - Categorical features (as integers).
 - Numerical features (as floats).
 - Calculated target variable(s): `Calculated Programming Time`, `Calculated Machining Time` (to compare results with other methods on historical data).
-
-In the case of working with Bemet one can export all information from Bemet.load_bemet.py:
-
-## Loading data Bemet
-
-1. Place the data exported from Bemet in the data folder.
-2. Run the load_bemet script:
-
-```bash
-python load_bemet.py
-```
-3. All data is stored in the data folder in Processed_Data.csv
    
 ### 📂 `steps/` Folder
 
